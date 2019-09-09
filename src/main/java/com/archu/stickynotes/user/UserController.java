@@ -100,7 +100,7 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", "The email update was successful.");
         return "redirect:/user/{id}";
     }
-    
+
     @PreAuthorize("#id == authentication.principal.id OR hasRole('ADMIN')")
     @PatchMapping("/user/{id}/update/password")
     public String updatePassword(@PathVariable String id, @RequestParam String password, RedirectAttributes redirectAttributes) {
@@ -162,7 +162,7 @@ public class UserController {
         RegistrationConfirmationToken token = registrationService.createRegistrationConfirmationToken(currentUser);
         registrationService.sendVerificationChangedEmail(email, token);
         redirectAttributes.addFlashAttribute("message", "The email update was successful.");
-        return "redirect:/user";
+        return "redirect:/logout";
     }
 
     @PatchMapping("/user/update/password")
