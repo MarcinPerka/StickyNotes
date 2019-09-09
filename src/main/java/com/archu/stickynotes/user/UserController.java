@@ -14,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -119,7 +118,7 @@ public class UserController {
     @Transactional
     @PatchMapping("/user/{id}/update/roles")
     public String updateRoles(@PathVariable String id, WrapperRole wrapperRole, RedirectAttributes redirectAttributes) {
-        if(wrapperRole.getRoles() == null)
+        if (wrapperRole.getRoles() == null)
             throw new NullPointerException("You didn't choose any role");
         Set<Role> roleSet = new HashSet<>(wrapperRole.getRoles());
         userService.updateRoles(roleSet, id);
@@ -140,7 +139,7 @@ public class UserController {
         userService.deleteUser(id);
         if (id.equals(currentUser.getId()))
             return "redirect:/logout";
-        redirectAttributes.addFlashAttribute("message", "User with id "+id+" has been deleted.");
+        redirectAttributes.addFlashAttribute("message", "User with id " + id + " has been deleted.");
         return "redirect:/users/page/1";
     }
 
@@ -149,7 +148,7 @@ public class UserController {
         userService.deleteUser(id);
         if (id.equals(currentUser.getId()))
             return "redirect:/logout";
-        redirectAttributes.addFlashAttribute("message", "User with id "+id+" has been deleted.");
+        redirectAttributes.addFlashAttribute("message", "User with id " + id + " has been deleted.");
         return "users";
     }
 

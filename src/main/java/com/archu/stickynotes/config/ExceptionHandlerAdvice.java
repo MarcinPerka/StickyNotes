@@ -13,7 +13,7 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(UserAlreadyExistAuthenticationException.class)
     public ModelAndView handleException(UserAlreadyExistAuthenticationException e) {
-        ModelAndView model = new ModelAndView("error");
+        ModelAndView model = new ModelAndView("customError");
         model.addObject("error", HttpStatus.FORBIDDEN.getReasonPhrase());
         model.addObject("status", HttpStatus.FORBIDDEN.value());
         model.addObject("message", e.getMessage());
@@ -22,7 +22,7 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ModelAndView handleException(EmailAlreadyExistsException e) {
-        ModelAndView model = new ModelAndView("error");
+        ModelAndView model = new ModelAndView("customError");
         model.addObject("error", HttpStatus.FORBIDDEN.getReasonPhrase());
         model.addObject("status", HttpStatus.FORBIDDEN.value());
         model.addObject("message", e.getMessage());
@@ -31,7 +31,7 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ModelAndView handleException(UsernameAlreadyExistsException e) {
-        ModelAndView model = new ModelAndView("error");
+        ModelAndView model = new ModelAndView("customError");
         model.addObject("error", HttpStatus.FORBIDDEN.getReasonPhrase());
         model.addObject("status", HttpStatus.FORBIDDEN.value());
         model.addObject("message", e.getMessage());

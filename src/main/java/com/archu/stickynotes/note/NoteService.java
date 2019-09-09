@@ -32,17 +32,17 @@ public class NoteService {
         return new PageImpl<>(listResultsByUserId, pageable, listResultsByUserId.size());
     }
 
-    public Optional<Note> getNoteById(String id) {
-        return noteRepository.findById(id);
+    public Optional<Note> getNoteByIdAndUserId(String userId, String id) {
+        return noteRepository.findByIdAndUserId(id, userId);
     }
 
     public void createNote(Note note) {
         noteRepository.save(note);
     }
 
-    public void deleteNoteById(String id) {
-        if (noteRepository.findById(id).isPresent())
-            noteRepository.deleteById(id);
+    public void deleteNoteByIdAndUserId(String userId, String id) {
+        if (noteRepository.findByIdAndUserId(id, userId).isPresent())
+            noteRepository.deleteByIdAndUserId(id, userId);
     }
 
     public void updateNote(Note note, String id) {
@@ -59,3 +59,4 @@ public class NoteService {
     }
 
 }
+

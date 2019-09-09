@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -19,7 +18,6 @@ public class Note {
 
     @Id
     private String id;
-
 
     @NotEmpty(message = "Title is required.")
     @Size(min = 7, message = "Not valid title.")

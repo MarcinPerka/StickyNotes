@@ -94,8 +94,8 @@ public class NoteController {
     }
 
     @GetMapping("/notes/{id}/update")
-    public String showUpdateNoteForm(Model model, @PathVariable String id) {
-        Optional<Note> optionalNote = noteService.getNoteById(id);
+    public String showUpdateNoteForm(Model model, @PathVariable String id, @AuthenticationPrincipal User currentUser) {
+        Optional<Note> optionalNote = noteService.getNoteByIdAndUserId(currentUser.getId(),id);
         optionalNote.ifPresent(note -> model.addAttribute("note", note));
         return "updateNote";
     }
@@ -108,8 +108,8 @@ public class NoteController {
     }
 
     @DeleteMapping("notes/{id}/delete")
-    public String deleteNote(@PathVariable String id, RedirectAttributes redirectAttributes) {
-        noteService.deleteNoteById(id);
+    public String deleteNote(@PathVariable String id, @AuthenticationPrincipal User currentUser, RedirectAttributes redirectAttributes) {
+        noteService.deleteNoteByIdAndUserId(currentUser.getId(),id);
         redirectAttributes.addFlashAttribute("message", "The note has been deleted");
         return "redirect:/notes/page/1";
     }
