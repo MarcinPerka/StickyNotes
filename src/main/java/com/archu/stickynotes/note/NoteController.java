@@ -101,8 +101,8 @@ public class NoteController {
     }
 
     @PutMapping("/notes/{id}/update")
-    public String updateNote(Note note, @PathVariable String id, RedirectAttributes redirectAttributes) {
-        noteService.updateNote(note, id);
+    public String updateNote(Note note, @PathVariable String id, @AuthenticationPrincipal User currentUser, RedirectAttributes redirectAttributes) {
+        noteService.updateNote(note, id, currentUser.getId());
         redirectAttributes.addFlashAttribute("message", "The note with title '" + note.getTitle() + "' has been updated");
         return "redirect:/notes/page/1";
     }

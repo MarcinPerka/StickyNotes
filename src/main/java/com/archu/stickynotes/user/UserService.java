@@ -45,7 +45,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    @PreAuthorize("#id == authentication.principal.id OR hasRole('ADMIN')")
     public void enableUser(String id) {
         Optional<User> optUser = userRepository.findById(id);
 
@@ -93,7 +92,6 @@ public class UserService {
         }
     }
 
-    @PreAuthorize("#id == authentication.principal.id OR hasRole('ADMIN')")
     public void updatePassword(String password, String id) {
         Optional<User> userToUpdate = userRepository.findById(id);
 

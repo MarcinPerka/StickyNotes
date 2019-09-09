@@ -27,7 +27,7 @@ public class NoteService {
 
 
     public Page<Note> getAllNotesByUserIdSearchByTitleOrNote(String userId, String searchInput, Pageable pageable) {
-        List<Note> searchResults =  noteRepository.findByNoteContainingIgnoreCaseOrTitleContainingIgnoreCase(searchInput, searchInput);// from repository we get search results for all user ids
+        List<Note> searchResults = noteRepository.findByNoteContainingIgnoreCaseOrTitleContainingIgnoreCase(searchInput, searchInput);// from repository we get search results for all user ids
         List<Note> listResultsByUserId = searchResults.stream().filter(note -> userId.equals(note.getUser().getId())).collect(Collectors.toList());
         return new PageImpl<>(listResultsByUserId, pageable, listResultsByUserId.size());
     }
@@ -45,9 +45,9 @@ public class NoteService {
             noteRepository.deleteByIdAndUserId(id, userId);
     }
 
-    public void updateNote(Note note, String id) {
+    public void updateNote(Note note, String id, String userId) {
         Optional<Note> noteToUpdate = noteRepository.findById(id);
-        if (noteToUpdate.isPresent()) {
+        if (noteToUpdate.isPresent() && userId.equals(noteToUpdate.get().getUser().getId())) {
             noteToUpdate.get().setTitle(note.getTitle());
             noteToUpdate.get().setNote(note.getNote());
             noteRepository.save(noteToUpdate.get());
