@@ -2,6 +2,7 @@ package com.archu.stickynotes.raports;
 
 import com.archu.stickynotes.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +20,7 @@ public class RaportController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/downloadExcel")
     public ModelAndView getUserExcelRaport() {
         Map<String, Object> model = new HashMap<>();
@@ -26,6 +28,7 @@ public class RaportController {
         return new ModelAndView(new ExcelView(), model);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/downloadPdf")
     public ModelAndView getUserPdfRaport() {
         Map<String, Object> model = new HashMap<>();
@@ -33,6 +36,7 @@ public class RaportController {
         return new ModelAndView(new PdfView(), model);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/downloadCsv")
     public ModelAndView getUserCsvRaport() {
         Map<String, Object> model = new HashMap<>();

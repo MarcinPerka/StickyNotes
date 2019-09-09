@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +46,7 @@ public class UserController {
         return "user";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/user/{id}")
     public String getUser(@PathVariable String id, Model model) {
         Optional<User> optionalUser = userService.getUserById(id);
