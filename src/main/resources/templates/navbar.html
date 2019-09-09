@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Sticky Notes</title>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+  </head>
+<body>
+
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark fragment-color">
+        <a th:href="@{/}" class="navbar-brand">
+            <img src="https://i.imgur.com/DGDPUYJ.png" width="55" alt="iconNote"
+                 class="d-inline-block align-left mr-2">
+            <span>Sticky Notes</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <div sec:authorize="hasRole('USER')">
+                    <form class="form-inline input-group my-2 my-lg-0" th:action="@{/notes/page/1}" th:method="GET">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search notes" th:value="${searchInput}" name="searchInput" aria-label="Search">
+                        <button class="btn btn-link btn-raised mr-2 my-2 my-sm-0" type="submit"><i class="fas fa-search text-light"></i></button>
+                    </form>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div sec:authorize="hasRole('USER')">
+                        <a th:href="@{/}" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div sec:authorize="hasRole('USER')">
+                        <a th:href="@{/notes/page/1}" class="nav-link"><i class="fas fa-sticky-note"></i> Notes</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div sec:authorize="hasRole('USER')">
+                        <a th:href="@{/user}" class="nav-link"><i class="fas fa-user"></i> Details</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/users/page/1}"><i class="fas fa-users"></i> Users</a>
+                    </div>
+                </li>
+                <li>
+                    <div sec:authorize="isAuthenticated()">
+
+                        <form name="logoutForm" th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-raised btn-primary"  ><i class="fas fa-sign-out-alt"></i> Logout</button>
+                        </form>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        <button type="button" class="btn btn-raised btn-primary" data-toggle="modal" data-target="#loginModal">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!--Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-backdrop">
+                <div class="login-form">
+                    <form th:action="@{/login}" method="post">
+                        <div class="avatar">
+                            <img th:src="@{/images/avatar.png}" alt="Avatar" />
+                        </div>
+                        <h2 class="text-center">Member Login</h2>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="username" placeholder="Username" required="required" minlength="4" maxlength="15">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Password" required="required" minlength="7">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-raised btn-lg btn-block">Sign in</button>
+                        </div>
+                        <p class="text-center small"><a th:href="@{/forgot-password}">Forgot Password?</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

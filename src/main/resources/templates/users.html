@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sticky Notes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+          integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+            integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+            integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+            crossorigin="anonymous"></script>
+    <script src="../static/js/scripts.js" th:src="@{/js/scripts.js}"></script>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="navbar:: navbar"></div>
+<div id="content">
+    <div th:if="${message}" id="mainAlertMessage" class="alert alert-dismissible fade show alert-success" role="alert">
+        <strong>Success!</strong>
+        <p th:text="${message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-8"><h4>Users <b>Details</b></h4></div>
+            <div class="btn-group flex-wrap">
+                <a class="btn btn-info mb-2 btn-space" role="button" th:href="@{/users/downloadCsv}">
+                    <i class="fas fa-file-csv"></i> CSV
+                </a>
+                <a class="btn btn-success mb-2 btn-space" role="button" th:href="@{/users/downloadExcel}">
+                    <i class="fas fa-file-excel"></i> XLS
+                </a>
+                <a class="btn btn-danger mb-2 btn-space" role="button" th:href="@{/users/downloadPdf}">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </a>
+                <div class="dropdown">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" th:href="@{|/users/page/${1}/email/asc|}">Email &uarr;</a>
+                        <a class="dropdown-item" th:href="@{|/users/page/${1}/email/desc|}">Email &darr;</a>
+                        <a class="dropdown-item" th:href="@{|/users/page/${1}/username/asc|}">Username &uarr;</a>
+                        <a class="dropdown-item" th:href="@{|/users/page/${1}/username/desc|}">Username &darr;</a>
+                        <a class="dropdown-item" th:href="@{|/users/page/${1}/createdAt/asc|}">Created Date &uarr;</a>
+                        <a class="dropdown-item" th:href="@{|/users/page/${1}/createdAt/desc|}">Created Date &darr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive" th:if="${users != null && !users.isEmpty()}">
+        <table class="table table-bordered text-nowrap">
+            <thead style="background-color: #F9F871">
+            <tr>
+                <th scope="col">Email</th>
+                <th scope="col">Username</th>
+                <th scope="col">Roles</th>
+                <th scope="col">Active</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <th:block th:each="user : ${users}">
+                <tr>
+                    <td class="limit-column" th:text="${user.email}"></td>
+                    <td class="limit-column" th:text="${user.username}"></td>
+                    <td class="limit-column">
+                        <th:block th:each="role: ${user.roles}">
+                            <p th:text="${role.label}"></p>
+                        </th:block>
+                    </td>
+                    <td class="limit-column" th:text="${user.enabled}"></td>
+                    <td class="limit-column" th:text="${#dates.format(user.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+                    <td class="limit-column">
+                        <div class="btn-group">
+                            <form th:action="@{/user/__${user.id}__}">
+                                <button type="submit" title="User Details"
+                                        data-toggle="tooltip" class="btn-space btn-link mr-2"><i
+                                        class="fas fa-cog text-primary"></i>
+                                </button>
+                            </form>
+                            <form th:method="DELETE" th:action="@{/user/__${user.id}__}">
+                                <button type="submit" class="btn-link btn-space" title="Delete"
+                                        data-toggle="tooltip"><i class="fas fa-minus-circle text-danger"></i></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+
+    <div th:fragment="pagination" th:if="${users != null && !users.isEmpty()}">
+        <nav aria-label="Pagination">
+            <ul class="pagination justify-content-end">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{|/notes/page/${currentPage-1}|}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span></a>
+                </li>
+                <li class="page-item" th:each="pageNumber : ${pageNumbers}"
+                    th:classappend="${currentPage == pageNumber} ? 'active' : ''">
+                    <a class="page-link" th:href="@{|/users/page/${pageNumber}|}" th:text=${pageNumber}></a>
+                </li>
+                <li class="page-item"
+                    th:classappend="${currentPage == pageNumbers.get(pageNumbers.size()-1)} ? 'disabled' : ''">
+                    <a class="page-link" th:href="@{|/notes/page/${currentPage+1}|}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<footer id="footer" th:replace="footer:: footer"></footer>
+</body>
+</html>

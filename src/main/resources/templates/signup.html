@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sticky Notes</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sticky Notes Sign up</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+          integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+            integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+            integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+            crossorigin="anonymous"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <link href="../static/css/index.css" th:href="@{/css/index.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+</head>
+<body>
+<div class="login-form" th:fragment="signup">
+    <form th:action="@{/signup}" method="post" th:object="${user}">
+        <div class="avatar">
+            <img th:src="@{/images/avatar.png}" alt="Avatar"/>
+        </div>
+        <h2 class="text-center">Member Sign in</h2>
+        <div class="form-group">
+            <input type="email" class="form-control" name="email" placeholder="Email" th:field="${user.email}"
+                   required="required" minlength="7">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="Username" th:field="${user.username}"
+                   required="required" minlength="4" maxlength="15">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Password"
+                   th:field="${user.password}" required="required" minlength="7">
+        </div>
+        <div class="g-recaptcha"
+             th:attr="data-sitekey=${@captchaSettings.getSite()}"
+             style="transform: scale(0.77); -webkit-transform: scale(0.77); transform-origin: 0 0; -webkit-transform-origin: 0 0;"></div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success btn-raised btn-lg btn-block">Sign up</button>
+            <p class="text-center small">Have an account? <a href="/login">Sign in here!</a></p>
+            <p class="text-center small"><a th:href="@{/}">Go to Homepage</a></p>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

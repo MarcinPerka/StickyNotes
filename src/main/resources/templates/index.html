@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Sticky Notes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+          integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+            integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+            integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+            crossorigin="anonymous"></script>
+    <script src='https://www.google.com/recaptcha/api.js?onload=reCaptchaCallback&render=explicit'></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="../static/js/scripts.js" th:src="@{/js/scripts.js}"></script>
+    <link href="../static/css/index.css" th:href="@{/css/index.css}" rel="stylesheet"/>
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet"/>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="navbar:: navbar"></div>
+<div class="d-flex flex-column">
+
+
+    <div class="flex-grow-1 flex-shrink-0">
+        <div class="row no-gutter">
+            <!-- The image half -->
+            <div class="col-md-6 d-none d-md-flex bg-image">
+                <div class="centered">
+                    <h1 class="text-center font-weight-bold ">Sticky Notes</h1>
+                    <h3 class="text-center font-weight-normal">A place for great ideas.</h3>
+                </div>
+            </div>
+
+            <!-- The content half -->
+            <div class="col-md-6 bg-light">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div th:if="${message}" id="mainAlertMessage" class="alert alert-dismissible fade show alert-success" role="alert">
+                            <strong th:text="${message}"></strong>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div th:if="${signupMessage}" class="alert alert-dismissible fade show alert-success"
+                             role="alert">
+                            <strong>Congratulations! You have successfully registered.<br><strong>
+                                <p>Please confirm the creation of your account by clicking on the
+                                    activation link in the email address you specified in the sign up form.
+                                </p>
+                                <hr>
+                                <div class="text-center">
+                                    <div class="btn-group">
+                                        <a role="button" href="javascript:void(0);" target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="btn btn btn-outline-secondary mr-2"
+                                           data-trigger="hover" data-toggle="popover" data-content="Other email"
+                                        ><img th:src="@{/images/email.png}" alt="Email"/>
+                                        </a>
+                                        <a role="button" href="http://www.gmail.com" target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="btn btn btn-outline-danger mr-2"
+                                           data-trigger="hover" data-toggle="popover" data-content="Gmail"><img
+                                                th:src="@{/images/gmail.png}" alt="Gmail"/>
+                                        </a>
+                                        <a role="button" href="http://www.outlook.com" target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="btn btn btn-outline-info mr-2"
+                                           data-trigger="hover" data-toggle="popover" data-content="Outlook"
+                                        ><img th:src="@{/images/outlook.png}" alt="Outlook"/>
+                                        </a>
+                                        <a role="button" href="http://www.yahoo.com" target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="btn btn btn-outline-primary mr-2"
+                                           data-trigger="hover" data-toggle="popover" data-content="Yahoo"><img
+                                                th:src="@{/images/yahoo.png}" alt="Yahoo"/>
+                                        </a>
+                                        <a role="button" href="http://www.icloud.com" target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="btn btn btn-outline-info"
+                                           data-trigger="hover" data-toggle="popover" data-content="iCloud"><img
+                                                th:src="@{/images/icloud.png}" alt="iCloud"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+
+                        <div sec:authorize="isAnonymous()">
+                            <div class="row">
+                                <div class="col-lg-10 col-xl-7 mx-auto">
+                                    <div class="login-form">
+                                        <form id="myForm" th:action="@{/signup}" method="post" th:object="${user}">
+                                            <div class="avatar">
+                                                <img th:src="@{/images/avatar.png}" alt="Avatar"/>
+                                            </div>
+                                            <h2 class="text-center">Member Sign in</h2>
+                                            <div class="form-group">
+                                                <input type="email" class="form-control" name="email"
+                                                       placeholder="Email" th:field="${user.email}"
+                                                       required minlength="7">
+                                                <p th:if="${#fields.hasErrors('email')}" class="label label-danger"
+                                                   th:errors="*{email}">Incorrect Email</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="username"
+                                                       placeholder="Username" th:field="${user.username}"
+                                                       required minlength="4" maxlength="15">
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" class="form-control" name="password"
+                                                       placeholder="Password" th:field="${user.password}"
+                                                       required minlength="7">
+                                            </div>
+                                            <div class="g-recaptcha"
+                                                 th:attr="data-sitekey=${@captchaSettings.getSite()}"
+                                                 style="transform: scale(0.77); -webkit-transform: scale(0.77); transform-origin: 0 0; -webkit-transform-origin: 0 0;"></div>
+                                            <div class="form-group">
+                                                <button type="submit"
+                                                        class="btn btn-success btn-raised btn-lg btn-block"
+                                                        data-toggle="modal" data-target="#verifyAccountModal">Sign
+                                                    up
+                                                </button>
+                                            </div>
+                                            <script>
+                                                window.onload = function () {
+                                                    var $recaptcha = document.querySelector('#g-recaptcha-response');
+
+                                                    if ($recaptcha) {
+                                                        $recaptcha.setAttribute("required", "required");
+                                                    }
+                                                };
+                                            </script>
+                                        </form>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div sec:authorize="isAuthenticated()">
+                            <div class="container text-center align-top ">
+                                <h4 class="text-dark">There is something wonderful in writing.<br>
+                                    We believe it's the ability of words to create emotional, inspiring and thrilling
+                                    stories.<br>
+                                    Sticky Notes was created on top of that belief.<br>
+                                    It's your place of expressing yourself.</h4>
+                                <a role="button" th:href="@{notes/create}"
+                                   class="btn btn-outline-warning "><i class="fas fa-sticky-note"></i> Write note
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End -->
+
+                </div>
+            </div>
+            <!-- End -->
+        </div>
+    </div>
+
+</div>
+</div>
+
+<footer th:replace="footer:: footer"></footer>
+
+</body>
+</html>

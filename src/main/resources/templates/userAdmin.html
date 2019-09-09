@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sticky Notes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+          integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+            integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+            integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+            crossorigin="anonymous"></script>
+    <script src="../static/js/scripts.js" th:src="@{/js/scripts.js}"></script>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="navbar:: navbar"></div>
+
+<div id="content" class="container">
+    <div th:if="${message}" id="mainAlertMessage" class="alert alert-dismissible fade show alert-success" role="alert">
+        <strong>Updated!</strong>
+        <p th:text="${message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <form th:object="${user}">
+        <div class="active-cyan-3 active-cyan-4">
+            <label for="username">Username:</label>
+            <div class="input-group">
+                <input type="text" id="username" class="form-control" name="username" th:value="${user.username}"
+                       disabled>
+                <span class="input-group-btn">
+                <button type="button" data-toggle="modal" data-target="#usernameEditModal" class="btn btn-secondary"><i
+                        class="fas fa-edit text-dark"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="active-cyan-3 active-cyan-4">
+            <label for="email">Email:</label>
+            <div class="input-group">
+                <input type="email" id="email" class="form-control" name="email" th:value="${user.email}" disabled>
+                <span class="input-group-btn">
+                <button type="button" data-toggle="modal" data-target="#emailEditModal" class="btn btn-secondary"><i
+                        class="fas fa-envelope text-dark"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="active-cyan-3 active-cyan-4 ">
+            <label for="password">Password:</label>
+            <div class="input-group">
+                <input type="password" id="password" class="form-control" name="password" th:value="${user.password}"
+                       disabled>
+                <span class="input-group-btn">
+                <button type="button" data-toggle="modal" data-target="#passwordEditModal" class="btn btn-secondary"><i
+                        class="fas fa-unlock-alt text-dark"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="active-cyan-3 active-cyan-4 ">
+            <label for="role">Roles:</label>
+            <div class="input-group">
+                <input th:each="role: ${user.roles}" type="text" id="role" class="form-control" name="role"
+                       th:value="${role.label}"
+                       disabled>
+                <span class="input-group-btn">
+                <button type="button" data-toggle="modal" data-target="#editRolesModal" class="btn btn-secondary"><i
+                        class="fas fa-unlock-alt text-dark"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="active-cyan-3 active-cyan-4 ">
+            <label for="role">Enabled:</label>
+            <div class="input-group">
+                <input type="text" id="enabled" class="form-control" name="enabled" th:value="${user.enabled}"
+                       disabled>
+                <span class="input-group-btn">
+                <button type="button" data-toggle="modal" data-target="#editEnabledModal" class="btn btn-secondary"><i
+                        class="fas fa-unlock-alt text-dark"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="text-center">
+            <button type="button" data-toggle="modal" data-target="#deleteUserModal"
+                    class="btn mt-2 btn-raised btn-danger"><i
+                    class="fas fa-user-times"></i> Delete
+                account
+            </button>
+        </div>
+    </form>
+
+
+    <!--Email Modal -->
+    <div class="modal fade" id="emailEditModal" tabindex="-1" role="dialog" aria-labelledby="emailEditModal"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Update email</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form th:action="@{/user/__${user.id}__/update/email}" th:method="PATCH">
+                    <div class="modal-body">
+                        <input type="email" id="emailModal" class="form-control" name="email" placeholder="New email"
+                               th:value="${email}"
+                               required minlength="7">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-raised btn-success mr-2"><i
+                                class="fas fa-check-circle"></i></button>
+                        <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal"><i
+                                class="fas fa-times-circle"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Username Modal -->
+<div class="modal fade" id="usernameEditModal" tabindex="-1" role="dialog" aria-labelledby="usernameEditModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usernameModalLabel">Update username</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/user/__${user.id}__/update/username}" th:method="PATCH">
+                <div class="modal-body">
+                    <input type="text" id="usernameModal" class="form-control" name="username"
+                           placeholder="New username" th:value="${username}"
+                           required minlength="4" maxlength="15">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-success mr-2"><i class="fas fa-check-circle"></i>
+                    </button>
+                    <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal"><i
+                            class="fas fa-times-circle"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--Password Modal -->
+<div class="modal fade" id="passwordEditModal" tabindex="-1" role="dialog" aria-labelledby="passwordEditModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">Update password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/user/__${user.id}__/update/password}" th:method="PATCH"
+                  th:oninput='verifyPassword.setCustomValidity(password.value !== verifyPassword.value ? "Passwords do not match." : "")'>
+                <div class="modal-body">
+                    <input type="password" id="passwordModal" class="form-control" name="password"
+                           placeholder="New password" th:value="${password}" required minlength="7">
+                    <br>
+                    <input type="password" id="verifyPasswordModal" class="form-control" name="verifyPassword"
+                           placeholder="Confirm password" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-success mr-2"><i class="fas fa-check-circle"></i>
+                    </button>
+                    <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal"><i
+                            class="fas fa-times-circle"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--Delete User Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/user/__${user.id}__}" th:method="DELETE">
+                <div class="modal-body">
+                    <p>Do you really want to delete this account? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-danger mr-2">Delete</button>
+                    <button type="button" class="btn btn-raised btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--Edit Roles Modal -->
+<div class="modal fade" id="editRolesModal" tabindex="-1" role="dialog" aria-labelledby="editRolesModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRolesModalLabel">Update roles</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/user/__${user.id}__/update/roles}" th:method="PATCH">
+                <div class="modal-body">
+                    <div th:each="role : ${roles}">
+                        <input name="roles" type="checkbox" th:value="${role.id}"
+                        />
+                        <span th:text="${role.label}">ROLE</span><br/>
+                        <br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-success mr-2"><i class="fas fa-check-circle"></i>
+                    </button>
+                    <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal"><i
+                            class="fas fa-times-circle"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!--Edit Enabled Modal -->
+<div class="modal fade" id="editEnabledModal" tabindex="-1" role="dialog" aria-labelledby="editEnabledModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEnabledModalLabel">Enable / Disable user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/user/__${user.id}__/update/enabled}" th:method="PATCH">
+                <div class="modal-body">
+                    <div>
+                        <input type="checkbox" name="enabled"
+                               th:checked="${enabled}">
+                        <span>Enabled</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-success mr-2"><i class="fas fa-check-circle"></i>
+                    </button>
+                    <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal"><i
+                            class="fas fa-times-circle"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<footer id="footer" th:replace="footer:: footer"></footer>
+</body>
+</html>

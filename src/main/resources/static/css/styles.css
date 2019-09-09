@@ -1,0 +1,43 @@
+.btn-link {
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: #0000EE;
+    padding: 0;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.btn-space {
+    margin-right: 5px;
+}
+
+.limit-column {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+    width: 150px;
+    height: 10px;
+    text-overflow: ellipsis;
+}
+
+.fragment-color{
+
+    background: #4285F4;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+.modal-backdrop {
+    background-color: rgba(0,0,0,.0001) !important;
+}
+
+
+
+
+
+

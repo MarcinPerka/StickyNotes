@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sticky Notes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet"
+          href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+          integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js"
+            integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+            integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+            crossorigin="anonymous"></script>
+    <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="navbar:: navbar"></div>
+<div id="content">
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-8"><h4>Notes <b>Details</b></h4></div>
+            <div class="btn-group flex-wrap">
+                <button type="button" class="btn btn-success mb-2 btn-space" data-toggle="modal"
+                        data-target="#addNoteModal">
+                    <i class="fa fa-plus"></i> Add Note
+                </button>
+                <button type="button" class="btn btn-danger mb-2 btn-space" data-toggle="modal"
+                        data-target="#deleteNotesModal">
+                    <i class="fas fa-minus-circle"></i> Delete All
+                </button>
+                <div class="dropdown">
+                    <a class="btn btn-warning" th:href="@{|/notes/page/${1}__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}" role="button">Unsort</a>
+                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item"
+                           th:classappend="${currentSortingDirection.equals('asc') && currentSortingItem.equals('title') } ? 'bg-warning' : ''"
+                           th:href="@{|/notes/page/${1}/title/asc__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}">Title &uarr;</a>
+                        <a class="dropdown-item"
+                           th:classappend="${currentSortingDirection.equals('desc') && currentSortingItem.equals('title') } ? 'bg-warning' : ''"
+                           th:href="@{|/notes/page/${1}/title/desc__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}">Title &darr;</a>
+                        <a class="dropdown-item"
+                           th:classappend="${currentSortingDirection.equals('asc') && currentSortingItem.equals('note') } ? 'bg-warning' : ''"
+                           th:href="@{|/notes/page/${1}/note/asc__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}">Note &uarr;</a>
+                        <a class="dropdown-item"
+                           th:classappend="${currentSortingDirection.equals('desc') && currentSortingItem.equals('note') } ? 'bg-warning' : ''"
+                           th:href="@{|/notes/page/${1}/note/desc__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}">Note &darr;</a>
+                        <a class="dropdown-item"
+                           th:classappend="${currentSortingDirection.equals('asc') && currentSortingItem.equals('createdAt') } ? 'bg-warning' : ''"
+                           th:href="@{|/notes/page/${1}/createdAt/asc__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}">Created Date &uarr;</a>
+                        <a class="dropdown-item"
+                           th:classappend="${currentSortingDirection.equals('desc') && currentSortingItem.equals('createdAt') } ? 'bg-warning' : ''"
+                           th:href="@{|/notes/page/${1}/createdAt/desc__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}">Created Date &darr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive" th:if="${notes != null && !notes.isEmpty()}">
+        <table class="table table-bordered text-nowrap">
+            <thead style="background-color: #F9F871">
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Note</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Modified At</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <th:block th:each="note : ${notes}">
+                <td class="limit-column" th:text="${note.title}"></td>
+                <td class="limit-column" th:text="${note.note}"></td>
+                <td class="limit-column" th:text="${#dates.format(note.createdAt, 'dd.MM.yyyy HH:mm')}"></td>
+                <td class="limit-column"
+                    th:text="${note.modifiedAt != note.createdAt ? #dates.format(note.modifiedAt, 'dd.MM.yyyy HH:mm') : ''}"></td>
+                <td class="limit-column">
+                    <div class="btn-group">
+                        <form th:action="@{/notes/__${note.id}__/update/}" th:method="GET">
+                            <button type="submit" title="Edit"
+                                    data-toggle="tooltip" class="btn-space btn-link mr-2"><i
+                                    class="fas fa-edit text-primary"></i>
+                            </button>
+                        </form>
+                        <form th:action="@{/notes/__${note.id}__/delete/}" th:method="DELETE">
+                            <button type="submit" title="Delete"
+                                    class="btn-space btn-link" data-toggle="tooltip"><i
+                                    class="far fa-trash-alt text-danger"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+
+    <div th:fragment="pagination" th:if="${notes != null && !notes.isEmpty()}">
+        <nav aria-label="Pagination">
+            <ul class="pagination justify-content-end">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled' : ''">
+                    <a class="page-link"
+                       th:href="@{|/notes/page/${currentPage-1}/${currentSortingItem}/${currentSortingDirection}__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span></a>
+                </li>
+                <li class="page-item" th:each="pageNumber : ${pageNumbers}"
+                    th:classappend="${currentPage == pageNumber} ? 'active' : ''">
+                    <a class="page-link"
+                       th:href="@{|/notes/page/${pageNumber}/${currentSortingItem}/${currentSortingDirection}__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}"
+                       th:text=${pageNumber}>1</a>
+                </li>
+                <li class="page-item"
+                    th:classappend="${currentPage == pageNumbers.get(pageNumbers.size()-1)} ? 'disabled' : ''">
+                    <a class="page-link"
+                       th:href="@{|/notes/page/${currentPage+1}/${currentSortingItem}/${currentSortingDirection}__${searchInput != null && !searchInput.empty ? '?searchInput=${searchInput}' : ''}__|}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!--Add Note Modal -->
+<div class="modal fade" id="addNoteModal" tabindex="-1" role="dialog" aria-labelledby="addNoteModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNoteModalLabel">Add your note:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/notes/create}" th:method="POST" th:object="${note}">
+                <div class="modal-body">
+                    <div class="active-cyan-3 active-cyan-4">
+                        <input type="text" id="title" class="form-control" name="title" placeholder="Title"
+                               th:field="*{title}"
+                               required="required" minlength="7">
+                    </div>
+                    <div class="active-cyan-3 active-cyan-4 ">
+                        <textarea id="note" class="form-control" name="note" placeholder="Note" rows="10"
+                                  th:field="*{note}"
+                                  required="required" minlength="7"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-success mr-2"><i class="fas fa-check-circle"></i>
+                    </button>
+                    <button type="button" class="btn btn-raised btn-danger" data-dismiss="modal"><i
+                            class="fas fa-times-circle"></i></button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Delete Notes Modal -->
+<div class="modal fade" id="deleteNotesModal" tabindex="-1" role="dialog" aria-labelledby="deleteNotesModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteNotesModalLabel">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form th:action="@{/notes}" th:method="DELETE">
+                <div class="modal-body">
+                    <p>Do you really want to delete this note? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-raised btn-danger mr-2">Delete</button>
+                    <button type="button" class="btn btn-raised btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<footer id="footer" th:replace="footer:: footer"></footer>
+</body>
+</html>

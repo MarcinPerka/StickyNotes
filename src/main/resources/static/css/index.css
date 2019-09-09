@@ -1,0 +1,98 @@
+.login,
+.image {
+    min-height: 100vh;
+}
+
+.bg-image {
+    background-image: url('https://i.imgur.com/dWmDIIC.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+}
+
+body {
+    color: #fff;
+    background: #9e9e9e;
+}
+
+.form-control {
+    min-height: 41px;
+    border-radius: 4px;
+}
+
+.login-form {
+    width: 310px;
+    margin: 0 auto;
+    padding: 100px 0 30px;
+}
+
+.login-form form {
+    color: #999;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    background: #fff;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    position: relative;
+}
+
+.login-form h2 {
+    font-size: 24px;
+    color: #454959;
+    margin: 45px 0 25px;
+}
+
+.login-form .avatar {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: -50px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
+    background: #70c5c0;
+    padding: 15px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.login-form .avatar img {
+    width: 100%;
+}
+
+.login-form a {
+    color: #454959;
+    text-decoration: underline;
+}
+
+.login-form form a {
+    color: #999;
+    text-decoration: none;
+}
+
+.login-form p{
+    color:#454959
+}
+
+.login-form a:hover,
+.login-form form a:hover {
+    text-decoration: none;
+}
+
+.login-form form a:hover {
+    text-decoration: underline;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

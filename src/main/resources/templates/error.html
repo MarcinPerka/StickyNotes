@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset='UTF-8'>
+    <title>Error!</title>
+    <link href="../static/css/error.css" th:href="@{/css/error.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="layout">
+    <div class="title" th:text="${error}"></div>
+    <div class="text" th:text="${status}"></div>
+    <div class="text icon_500" th:text="${message}"></div>
+    <div class="buttons">
+        <a href="/" class="text_buttons_intro">Back to home page</a>
+    </div>
+</div>
+</body>
+</html>

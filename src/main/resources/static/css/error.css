@@ -1,0 +1,105 @@
+
+html, body{
+    height: 100%;
+}
+
+body {
+    background: #2f4256 url('http://freelansim.ru/images/service_pattern.png')repeat 0 0;
+    text-align: center;
+    font-family: 'PT Sans', Verdana, sans-serif;
+    margin: 0;
+    padding:0;
+    overflow: hidden;
+    display: table;
+    min-width: 100%;
+}
+
+.layout{
+    width: 400px;
+    margin: 0 auto;
+    margin: 0;
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.icon500{
+    background: url('http://freelansim.ru/500.png');
+    width: 395px;
+    height: 162px;
+    margin: 65px auto 0px;
+}
+
+.text{
+    font-size: 36px;
+    color: #fff;
+    font-weight: normal;
+    margin: 0 auto;
+    line-height: 1;
+}
+
+.title{
+    font-size: 120px;
+    color: #fff;
+    font-weight: 700;
+    margin: 0 auto 20px;
+    line-height: 1;
+    font-family: Arial, Verdana, sans-serif;
+}
+
+.icon_500:after{
+    content: '';
+    display: block;
+    width: 202px;
+    height: 202px;
+    margin: 40px auto;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
+.icon_500:after{
+    background-image: url('http://freelansim.ru/images/500_icon.png');
+}
+
+.buttons{
+    text-align: center;
+    display:inline-block;
+    margin:auto;
+    position: relative;
+    border-top: 3px solid #667c93;
+    width: 400px;
+}
+
+.buttons_wrap{
+    padding-top: 35px;
+}
+
+.text_buttons_intro{
+    font-size: 20px;
+    font-weight: normal;
+    color: #748ca5;
+    line-height: 1.5em;
+    margin: 0;
+    width: 100%;
+    padding: 35px 0 0;
+    text-align: center;
+}
+
+a.button{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff !important;
+    background: #5bb3ee;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 10px;
+    text-decoration: none;
+}
