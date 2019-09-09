@@ -21,17 +21,16 @@
     <script src='https://www.google.com/recaptcha/api.js?onload=reCaptchaCallback&render=explicit'></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="../static/js/scripts.js" th:src="@{/js/scripts.js}"></script>
-    <link href="../static/css/index.css" th:href="@{/css/index.css}" rel="stylesheet"/>
     <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet"/>
     <link href="../static/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link href="../static/css/index.css" th:href="@{/css/index.css}" rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="navbar:: navbar"></div>
 <div class="d-flex flex-column">
 
-
     <div class="flex-grow-1 flex-shrink-0">
-        <div class="row no-gutter">
+        <div class="row no-gutter" style="margin-right: 0">
             <!-- The image half -->
             <div class="col-md-6 d-none d-md-flex bg-image">
                 <div class="centered">
@@ -42,7 +41,7 @@
 
             <!-- The content half -->
             <div class="col-md-6 bg-light">
-                <div class="login d-flex align-items-center py-5">
+                <div class="login d-flex align-items-center">
                     <div class="container">
                         <div th:if="${message}" id="mainAlertMessage" class="alert alert-dismissible fade show alert-success" role="alert">
                             <strong th:text="${message}"></strong>
