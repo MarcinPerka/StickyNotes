@@ -45,7 +45,8 @@ public class NoteService {
             noteRepository.deleteByIdAndUserId(id, userId);
     }
 
-    public void updateNote(Note note, String id, String userId) {
+    public void updateNote(Note note, String id, String userId
+    ) {
         Optional<Note> noteToUpdate = noteRepository.findById(id);
         if (noteToUpdate.isPresent() && userId.equals(noteToUpdate.get().getUser().getId())) {
             noteToUpdate.get().setTitle(note.getTitle());
